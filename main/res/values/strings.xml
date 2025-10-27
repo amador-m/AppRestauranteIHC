@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SistemaRestaurante</string>
+    <!-- Strings para o CartItem -->
+    <string name="content_description_item_image">Imagem do item no carrinho</string>
+    <string name="content_description_remove_item">Remover item do carrinho</string>
+    <string name="label_quantity">Qtd: %d</string>
+    <string name="label_cart_item_quantity">Quantidade:</string>
+</resources>
