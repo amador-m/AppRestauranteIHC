@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1071180229949",
+    "project_id": "sistemarestaurante-775a3",
+    "storage_bucket": "sistemarestaurante-775a3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071180229949:android:56f4fcca483ff1f9a1e954",
+        "android_client_info": {
+          "package_name": "com.example.sistemarestaurante"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApOdB-_tAb8w_05UiQBzaVsu8phCOfZSA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

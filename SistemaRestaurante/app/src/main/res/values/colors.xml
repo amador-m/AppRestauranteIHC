@@ -1,0 +1,13 @@
+<resources>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="brand_red_primary">#B21117</color>
+    <color name="purple_700">#B21117</color>
+    <color name="purple_500">#B21117</color>
+    <color name="brand_orange_secondary">#F7891B</color>
+    <color name="teal_200">#F7891B</color>
+    <color name="teal_700">#F7891B</color>
+
+</resources>
