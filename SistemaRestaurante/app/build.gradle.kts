@@ -53,9 +53,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation("com.google.firebase:firebase-database-ktx")
     implementation(libs.firebase.auth.ktx)
-    // implementation(libs.firebase.firestore.ktx) // (Você não estava usando, mas pode manter se quiser)
+    // implementation(libs.firebase.firestore.ktx) 
 
-    // --- LINHA REMOVIDA ---
     // implementation("com.google.firebase:firebase-messaging-ktx")
 
     // Coroutines
@@ -64,7 +63,7 @@ dependencies {
 
     // Glide (Imagens)
     implementation(libs.glide)
-    kapt(libs.glide.kapt) // (Use 'annotationProcessor' se 'kapt' não funcionar)
+    kapt(libs.glide.kapt)
 
     // Testes
     testImplementation(libs.junit)
