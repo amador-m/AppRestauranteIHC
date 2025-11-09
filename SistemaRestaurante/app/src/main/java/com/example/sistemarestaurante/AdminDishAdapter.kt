@@ -7,7 +7,6 @@ import com.example.sistemarestaurante.databinding.ItemAdminDishBinding
 import com.bumptech.glide.Glide
 
 class AdminDishAdapter(
-    // MutableList para que a Activity possa gerenciar a lista
     private val dishes: MutableList<Dish>,
     private val onEditClickListener: (Dish) -> Unit,
     private val onDeleteClickListener: (Dish) -> Unit,
@@ -27,7 +26,6 @@ class AdminDishAdapter(
 
     override fun getItemCount(): Int = dishes.size
 
-    // onde os dados são "ligados" à interface
     override fun onBindViewHolder(holder: AdminDishViewHolder, position: Int) {
         val dish = dishes[position]
 
@@ -41,15 +39,14 @@ class AdminDishAdapter(
                 Glide.with(holder.itemView.context)
                     .load(dish.imageUrl)
                     .placeholder(R.drawable.ic_launcher_background)
-                    .into(ivAdminDishImage) // Usando ivAdminDishImage
+                    .into(ivAdminDishImage) 
             } else {
-                ivAdminDishImage.setImageResource(R.drawable.ic_launcher_foreground) // (Imagem padrão)
+                ivAdminDishImage.setImageResource(R.drawable.ic_launcher_foreground) 
             }
 
             btnEditDish.setOnClickListener { onEditClickListener(dish) }
             btnDeleteDish.setOnClickListener { onDeleteClickListener(dish) }
 
-            // 'isPressed' para evitar que o listener dispare sozinho quando o RecyclerView é desenhado
             switchDishAvailability.setOnCheckedChangeListener { _, isChecked ->
                 if (switchDishAvailability.isPressed) {
                     onToggleAvailabilityListener(dish, isChecked)
@@ -57,4 +54,5 @@ class AdminDishAdapter(
             }
         }
     }
+
 }
