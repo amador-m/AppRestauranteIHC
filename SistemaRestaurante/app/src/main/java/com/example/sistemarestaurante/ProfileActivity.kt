@@ -10,16 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.sistemarestaurante.databinding.ActivityProfileBinding
-// IMPORTS NOVOS:
 import com.example.sistemarestaurante.databinding.DialogSelectAvatarBinding
 
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileBinding
     private var currentUserType: UserType = UserType.CLIENT
-
-    // --- MUDANÇA 1: Mapa de Avatares ---
-    // Trocamos as URLs da web pelos IDs dos seus ícones locais (da pasta drawable).
     private val avatars = mapOf(
         "Ícone 1" to R.drawable.icon1,
         "Ícone 2" to R.drawable.icon2,
@@ -29,8 +25,6 @@ class ProfileActivity : AppCompatActivity() {
         "Ícone 6" to R.drawable.icon6
     )
 
-    // --- MUDANÇA 2: Variável de Controle ---
-    // Vamos salvar o NOME do recurso (ex: "icon1") em vez de uma URL.
     private var selectedAvatarName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,13 +41,12 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(Intent(this, InfoActivity::class.java))
         }
 
-        // --- CÓDIGO DE LOGOUT (JÁ ESTAVA CORRETO) ---
         binding.btnLogout.setOnClickListener {
             FirebaseManager.logout()
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
-            finishAffinity() // Fecha esta e todas as atividades anteriores
+            finishAffinity()
         }
     }
 
@@ -66,7 +59,6 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    // --- MUDANÇA 3: Salvar o Perfil ---
     private fun saveUserProfile() {
         setLoading(true)
         val name = binding.etName.text.toString().trim()
@@ -74,7 +66,6 @@ class ProfileActivity : AppCompatActivity() {
         val dob = binding.etDateOfBirth.text.toString().trim()
         val phone = binding.etPhone.text.toString().trim()
 
-        // Passa o NOME do avatar (ex: "icon1") para salvar no Firebase
         FirebaseManager.updateUserDetails(name, username, dob, phone, selectedAvatarName) { result ->
             setLoading(false)
             if (result.isSuccess) {
@@ -88,35 +79,28 @@ class ProfileActivity : AppCompatActivity() {
     private fun setupUserDetailsListener() {
         setLoading(true)
         FirebaseManager.addUserDetailsListener { result ->
-            setLoading(false) // Esconde o loading
+            setLoading(false) 
             if (result.isSuccess) {
                 val user = result.getOrNull()
                 user?.let {
-                    // Chama a função que atualiza a tela
                     updateProfileUI(it)
                 }
             } else {
                 Toast.makeText(this, "Erro ao carregar perfil: ${result.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
-                // Tenta configurar a navegação mesmo assim
                 setupNavigation()
             }
         }
     }
 
-    // 5. RENOMEIE 'loadUserProfile' PARA 'updateProfileUI'
-    // Esta função agora só atualiza a tela, não busca mais os dados.
     private fun updateProfileUI(user: User) {
         currentUserType = user.userType
         binding.etName.setText(user.name)
         binding.etUsername.setText(user.username)
-
-        // CORREÇÃO (Problema 2): Preenche os campos que faltavam
         binding.etDateOfBirth.setText(user.dateOfBirth)
         binding.etPhone.setText(user.phone)
 
         binding.tvUserType.text = "Logado como: ${user.userType.name}"
 
-        // CORREÇÃO (Problema 3): Atualiza a UI de fidelidade
         if (user.userType == UserType.CLIENT) {
             binding.cardLoyalty.visibility = View.VISIBLE
             binding.tvCouponCount.text = user.coupons.toString()
@@ -127,23 +111,20 @@ class ProfileActivity : AppCompatActivity() {
             binding.cardLoyalty.visibility = View.GONE
         }
 
-        // Carrega o avatar
         selectedAvatarName = user.profileImageUrl
         if (selectedAvatarName.isNotEmpty()) {
             val resourceId = getResourceIdByName(selectedAvatarName)
             Glide.with(this)
-                .load(resourceId.takeIf { it != 0 } ?: R.drawable.ic_person) // Imagem padrão
+                .load(resourceId.takeIf { it != 0 } ?: R.drawable.ic_person)
                 .placeholder(R.drawable.ic_person)
                 .into(binding.ivProfileImage)
         } else {
-            binding.ivProfileImage.setImageResource(R.drawable.ic_person) // Imagem padrão
+            binding.ivProfileImage.setImageResource(R.drawable.ic_person) 
         }
 
-        // Configura a navegação SÓ DEPOIS de saber o tipo de usuário
         setupNavigation()
     }
 
-    // 6. ADICIONE O onDestroy PARA LIMPAR O LISTENER
     override fun onDestroy() {
         super.onDestroy()
         FirebaseManager.removeUserDetailsListener()
@@ -154,52 +135,30 @@ class ProfileActivity : AppCompatActivity() {
         binding.btnSaveProfile.isEnabled = !isLoading
     }
 
-    // --- MUDANÇA 5: Diálogo de Seleção de Avatar (Versão Customizada) ---
     private fun showAvatarSelectionDialog() {
-        // 1. Infla o layout customizado do *diálogo*
         val dialogBinding = DialogSelectAvatarBinding.inflate(layoutInflater)
-
-        // 2. Cria o AlertDialog
         val dialog = AlertDialog.Builder(this)
             .setView(dialogBinding.root)
             .create()
-
-        // 3. Prepara os dados para o Adapter
-        // Converte o Map ({"Icone 1" to 123}, {"Icone 2" to 456}) para uma Lista de Pairs
         val avatarList = avatars.toList()
-
-        // 4. Define a ação de clique
         val avatarAdapter = AvatarAdapter(avatarList) { (name, resourceId) ->
-            // O que acontece quando um avatar é CLICADO:
-
-            // 1. Converte o ID (ex: 2131165352) para o NOME (ex: "icon1")
             selectedAvatarName = resources.getResourceEntryName(resourceId)
-
-            // 2. Carrega a imagem no ImageView da ProfileActivity
             Glide.with(this)
                 .load(resourceId)
                 .into(binding.ivProfileImage)
-
-            // 3. Fecha o diálogo
             dialog.dismiss()
         }
 
-        // 5. Configura o RecyclerView
         dialogBinding.rvAvatarList.layoutManager = LinearLayoutManager(this)
         dialogBinding.rvAvatarList.adapter = avatarAdapter
 
-        // 6. Mostra o diálogo
         dialog.show()
     }
 
-    // --- MUDANÇA 6: Nova Função Utilitária ---
-    // Converte o NOME do drawable (ex: "icon1") para o ID real (ex: 2131165352)
     private fun getResourceIdByName(name: String): Int {
-        // Retorna 0 se não encontrar (o que fará o Glide usar o placeholder)
         return resources.getIdentifier(name, "drawable", packageName)
     }
 
-    // (A função setupNavigation não mudou e está correta)
     private fun setupNavigation() {
         binding.bottomNavigationView.menu.clear()
 
@@ -236,9 +195,10 @@ class ProfileActivity : AppCompatActivity() {
                 }
 
                 // Comum
-                R.id.nav_profile -> { /* Já estamos aqui */ }
+                R.id.nav_profile -> {  }
             }
-            true // Retorna 'true' para todos os cliques válidos
+            true 
         }
     }
+
 }
