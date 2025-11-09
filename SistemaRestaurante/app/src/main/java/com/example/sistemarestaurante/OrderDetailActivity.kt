@@ -17,12 +17,9 @@ class OrderDetailActivity : AppCompatActivity() {
         binding = ActivityOrderDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // --- CORREÇÃO DO BUILD ERROR AQUI ---
-        // Troca o 'binding.toolbar' pelo ID correto do ImageButton ('ibBack')
         binding.ibBack.setOnClickListener {
-            finish() // Ação de voltar
+            finish() 
         }
-        // --- FIM DA CORREÇÃO ---
 
         val order = getOrderFromIntent()
 
@@ -37,7 +34,6 @@ class OrderDetailActivity : AppCompatActivity() {
     }
 
     private fun getOrderFromIntent(): Order? {
-        // (Esta função não muda)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("ORDER_DETAILS", Order::class.java)
         } else {
@@ -47,16 +43,15 @@ class OrderDetailActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(order: Order) {
-        // (Esta função não muda)
         adapter = OrderDetailAdapter(order.items)
         binding.rvOrderItems.layoutManager = LinearLayoutManager(this)
         binding.rvOrderItems.adapter = adapter
     }
 
     private fun bindOrderData(order: Order) {
-        // (Esta função não muda)
         binding.tvOrderStatus.text = order.status.name
         binding.tvPaymentMethod.text = order.paymentMethod.ifEmpty { "Não informado" }
         binding.tvOrderTotal.text = String.format("R$ %.2f", order.totalPrice)
     }
+
 }
