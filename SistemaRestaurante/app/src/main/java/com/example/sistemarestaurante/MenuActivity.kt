@@ -12,10 +12,9 @@ import com.example.sistemarestaurante.databinding.ActivityMenuBinding
 class MenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMenuBinding
     private lateinit var menuAdapter: DishAdapter
-    private var currentUserType: UserType = UserType.CLIENT // O padrão aqui é Cliente
+    private var currentUserType: UserType = UserType.CLIENT 
     private val fullDishList = mutableListOf<Dish>()
 
-    // Variável para guardar o filtro atual
     private var selectedCategory: String = "Todos"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,20 +22,17 @@ class MenuActivity : AppCompatActivity() {
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // --- LÓGICA DE NAVEGAÇÃO ATUALIZADA (Req 1) ---
         val userTypeString = intent.getStringExtra("USER_TYPE")
         currentUserType = UserType.valueOf(userTypeString ?: UserType.CLIENT.name)
 
         if (currentUserType == UserType.EMPLOYEE) {
             binding.tvWelcomeMessage.text = "Cardápio (Visão)"
-            // Garante que o menu correto seja inflado
             setupNavigation()
         } else {
             binding.tvWelcomeMessage.text = "Cardápio"
             setupNavigation()
         }
-        // --- FIM DA ATUALIZAÇÃO ---
-
+        
         setupRecyclerView()
         setupSearchView()
         setupCategoryFilterListeners()
@@ -55,16 +51,14 @@ class MenuActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Define o item "Cardápio" como ativo na barra de navegação
         if (!intent.getBooleanExtra("IS_GUEST_MODE", false)) {
             binding.bottomNavigationView.selectedItemId = R.id.nav_menu
         }
-        filterDishes() // Filtra novamente caso o usuário volte
+        filterDishes() 
     }
 
     private fun setupRecyclerView() {
-        // Usando o DishAdapter correto
-        menuAdapter = DishAdapter(mutableListOf()) { dish -> // Verifique se aqui é DishAdapter
+        menuAdapter = DishAdapter(mutableListOf()) { dish -> 
             val isGuestMode = intent.getBooleanExtra("IS_GUEST_MODE", false)
             if (isGuestMode || currentUserType != UserType.CLIENT) {
                 Toast.makeText(this, "Apenas clientes podem adicionar itens", Toast.LENGTH_SHORT).show()
@@ -90,7 +84,6 @@ class MenuActivity : AppCompatActivity() {
         })
     }
 
-    // --- FUNÇÃO NOVA ---
     private fun setupCategoryFilterListeners() {
         binding.btnCategoryAll.setOnClickListener {
             selectedCategory = "Todos"
@@ -122,14 +115,9 @@ class MenuActivity : AppCompatActivity() {
         }
     }
 
-    // --- FUNÇÃO ATUALIZADA ---
     private fun filterDishes() {
         val query = binding.searchView.query?.toString()
-
-        // 1. Filtra apenas os disponíveis
         val availableDishes = fullDishList.filter { it.isAvailable }
-
-        // 2. Filtra pela CATEGORIA selecionada
         val byCategory = if (selectedCategory == "Todos") {
             availableDishes
         } else {
@@ -138,7 +126,6 @@ class MenuActivity : AppCompatActivity() {
             }
         }
 
-        // 3. Filtra pelo TEXTO da busca
         val filteredList = if (query.isNullOrEmpty()) {
             byCategory
         } else {
@@ -169,7 +156,7 @@ class MenuActivity : AppCompatActivity() {
                         startActivity(Intent(this, HitsActivity::class.java))
                         true
                     }
-                    R.id.nav_menu -> true // Já estamos aqui
+                    R.id.nav_menu -> true 
                     R.id.nav_cart -> {
                         startActivity(Intent(this, CartActivity::class.java))
                         true
@@ -196,7 +183,7 @@ class MenuActivity : AppCompatActivity() {
                         startActivity(Intent(this, EmployeeDashboardActivity::class.java))
                         true
                     }
-                    R.id.nav_view_menu -> true // Já estamos aqui
+                    R.id.nav_view_menu -> true
                     R.id.nav_profile -> {
                         startActivity(Intent(this, ProfileActivity::class.java))
                         true
@@ -206,4 +193,5 @@ class MenuActivity : AppCompatActivity() {
             }
         }
     }
+
 }
