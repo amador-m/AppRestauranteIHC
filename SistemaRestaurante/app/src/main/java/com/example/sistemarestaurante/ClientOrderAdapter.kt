@@ -32,7 +32,6 @@ class ClientOrderAdapter(
             tvOrderTotal.text = String.format("R$ %.2f", order.totalPrice)
             tvOrderStatus.text = "Status: ${order.status.name}"
 
-            // --- LINHA ADICIONADA ---
             tvPaymentMethod.text = "Pagamento: ${order.paymentMethod.ifEmpty { "Não informado" }}"
         }
 
@@ -47,4 +46,5 @@ class ClientOrderAdapter(
         orders.sortByDescending { it.timestamp }
         notifyDataSetChanged()
     }
+
 }
