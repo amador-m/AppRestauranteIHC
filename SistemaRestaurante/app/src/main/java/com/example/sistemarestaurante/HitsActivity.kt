@@ -11,21 +11,13 @@ class HitsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHitsBinding
     private lateinit var hitsAdapter: HitsAdapter
-
-    // --- MUDANÇA 1: Adicionar esta variável ---
-    // Precisamos saber quem é o usuário. O padrão é CLIENTE.
     private var currentUserType: UserType = UserType.CLIENT
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHitsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // --- MUDANÇA 2: Chamar a nova função ---
-        // Vamos primeiro buscar os dados do usuário e SÓ DEPOIS carregar o resto.
         loadData()
-        // As linhas setupRecyclerView() e loadHits() foram MOVIDAS daqui.
-
         setupNavigation()
     }
 
@@ -34,27 +26,20 @@ class HitsActivity : AppCompatActivity() {
         binding.bottomNavigationView.selectedItemId = R.id.nav_hits
     }
 
-    // --- MUDANÇA 3: Nova função ---
-    // Esta função busca o tipo de usuário antes de carregar a lista.
     private fun loadData() {
         FirebaseManager.getUserDetails { result ->
             if (result.isSuccess) {
-                // Atualiza o tipo de usuário com o que veio do Firebase
                 currentUserType = result.getOrNull()?.userType ?: UserType.CLIENT
             }
-            // Agora que sabemos quem é o usuário, podemos carregar a tela
             setupRecyclerView()
             loadHits()
         }
     }
 
-    // --- MUDANÇA 4: setupRecyclerView ATUALIZADO ---
     private fun setupRecyclerView() {
         hitsAdapter = HitsAdapter(mutableListOf()) { dish ->
-            // A lógica de clique agora é inteligente!
             if (currentUserType == UserType.CLIENT) {
                 CartManager.addItem(dish)
-                // O Toast que estava na Activity foi mantido.
                 Toast.makeText(this, "${dish.name} adicionado!", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Apenas clientes podem adicionar itens", Toast.LENGTH_SHORT).show()
@@ -86,7 +71,7 @@ class HitsActivity : AppCompatActivity() {
         binding.bottomNavigationView.selectedItemId = R.id.nav_hits
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_hits -> true // Já estamos aqui
+                R.id.nav_hits -> true 
                 R.id.nav_menu -> {
                     startActivity(Intent(this, MenuActivity::class.java))
                     true
@@ -110,6 +95,6 @@ class HitsActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // (Não é mais necessário remover o listener, pois usamos addListenerForSingleValueEvent)
     }
+
 }
