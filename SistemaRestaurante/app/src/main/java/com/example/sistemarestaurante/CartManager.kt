@@ -19,8 +19,6 @@ object CartManager {
         }
     }
 
-    // --- CORREÇÃO 1: 'removeItem' estava com bug ---
-    // Ele deve encontrar o item pelo 'dish.id' e removê-lo da lista
     fun removeItem(dish: Dish) {
         val itemToRemove = cartItems.find { it.dish.id == dish.id }
         if (itemToRemove != null) {
@@ -29,8 +27,6 @@ object CartManager {
         }
     }
 
-    // --- CORREÇÃO 2: Função 'updateQuantity' estava FALTANDO ---
-    // (A CartActivity estava chamando isso, mas não existia)
     fun updateQuantity(dish: Dish, newQuantity: Int) {
         val existingItem = cartItems.find { it.dish.id == dish.id }
         existingItem?.let {
@@ -38,7 +34,7 @@ object CartManager {
                 it.quantity = newQuantity
                 Log.d(TAG, "Quantidade de ${dish.name} atualizada para $newQuantity")
             } else {
-                removeItem(dish) // Remove se a quantidade for 0 ou menor
+                removeItem(dish) 
             }
         }
     }
@@ -47,7 +43,6 @@ object CartManager {
         return cartItems.toList()
     }
 
-    // --- CORREÇÃO 3: 'getCartTotal' estava com nome errado ('calculateTotalPrice') ---
     fun getCartTotal(): Double {
         return cartItems.sumOf { it.dish.price * it.quantity }
     }
@@ -56,4 +51,5 @@ object CartManager {
         cartItems.clear()
         Log.d(TAG, "Carrinho limpo")
     }
+
 }
