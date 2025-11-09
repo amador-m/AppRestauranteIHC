@@ -1,6 +1,6 @@
 package com.example.sistemarestaurante
 
-import android.content.Intent // <-- VERIFIQUE SE O IMPORT ESTÁ AQUI
+import android.content.Intent 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -65,7 +65,6 @@ class AdminActivity : AppCompatActivity() {
             dialogBinding.etDishDescription.setText(dishToEdit?.description)
             dialogBinding.etDishPrice.setText(dishToEdit?.price.toString())
             dialogBinding.etDishImageUrl.setText(dishToEdit?.imageUrl)
-            // --- LINHA ADICIONADA (1/3) ---
             dialogBinding.etDishCategory.setText(dishToEdit?.category)
         }
 
@@ -77,7 +76,6 @@ class AdminActivity : AppCompatActivity() {
                 val description = dialogBinding.etDishDescription.text.toString().trim()
                 val price = dialogBinding.etDishPrice.text.toString().toDoubleOrNull() ?: 0.0
                 val imageUrl = dialogBinding.etDishImageUrl.text.toString().trim()
-                // --- LINHA ADICIONADA (2/3) ---
                 val category = dialogBinding.etDishCategory.text.toString().trim()
 
                 if (name.isEmpty() || description.isEmpty() || price <= 0 || category.isEmpty()) { // Categoria adicionada à verificação
@@ -91,7 +89,6 @@ class AdminActivity : AppCompatActivity() {
                     description = description,
                     price = price,
                     imageUrl = imageUrl,
-                    // --- LINHA ADICIONADA (3/3) ---
                     category = category,
                     isAvailable = dishToEdit?.isAvailable ?: true
                 )
@@ -147,7 +144,7 @@ class AdminActivity : AppCompatActivity() {
         binding.bottomNavigationView.selectedItemId = R.id.nav_manage_menu
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_manage_menu -> true // Já estamos aqui
+                R.id.nav_manage_menu -> true 
                 R.id.nav_manage_orders -> {
                     startActivity(Intent(this, EmployeeDashboardActivity::class.java))
                     true
@@ -165,4 +162,5 @@ class AdminActivity : AppCompatActivity() {
         super.onDestroy()
         FirebaseManager.removeMenuListener()
     }
+
 }
