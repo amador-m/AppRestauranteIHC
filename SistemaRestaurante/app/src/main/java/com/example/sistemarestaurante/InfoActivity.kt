@@ -13,10 +13,8 @@ class InfoActivity : AppCompatActivity() {
         binding = ActivityInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Adiciona o clique para o botão "Voltar" da barra de topo
         binding.ibBack.setOnClickListener {
-            finish() // Fecha esta tela e volta para a tela anterior
+            finish() 
         }
     }
-
 }
