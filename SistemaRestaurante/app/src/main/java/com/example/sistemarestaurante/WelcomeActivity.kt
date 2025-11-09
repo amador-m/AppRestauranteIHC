@@ -22,7 +22,6 @@ class WelcomeActivity : AppCompatActivity() {
         val userTypeString = intent.getStringExtra("USER_TYPE")
         val userType = UserType.valueOf(userTypeString ?: UserType.CLIENT.name)
 
-        // Deixa a barra visível no início
         binding.progressBarWelcome.visibility = View.VISIBLE
 
         FirebaseManager.getUserDetails { result ->
@@ -37,15 +36,13 @@ class WelcomeActivity : AppCompatActivity() {
                 binding.tvWelcomeMessage.text = "Bem-vindo(a)!"
             }
 
-            // Espera 2.5 segundos e SÓ então esconde a barra e muda de tela
             Handler(Looper.getMainLooper()).postDelayed({
-                binding.progressBarWelcome.visibility = View.GONE // Esconde a barra
+                binding.progressBarWelcome.visibility = View.GONE 
                 redirectToDashboard(userType)
             }, 2500)
         }
     }
 
-    // (A função redirectToDashboard não muda)
     private fun redirectToDashboard(userType: UserType) {
         val intent = when (userType) {
             UserType.CLIENT -> Intent(this, HitsActivity::class.java)
@@ -55,4 +52,5 @@ class WelcomeActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
 }
