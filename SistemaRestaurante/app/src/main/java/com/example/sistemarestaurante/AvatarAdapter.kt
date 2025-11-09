@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.sistemarestaurante.databinding.ItemAvatarBinding
 
-// Vamos usar um "TypeAlias" para simplificar o Pair (Nome "Ícone 1", ID R.drawable.icon1)
 typealias AvatarItem = Pair<String, Int>
 
 class AvatarAdapter(
@@ -41,4 +40,5 @@ class AvatarAdapter(
             onAvatarClicked(avatars[position])
         }
     }
+
 }
