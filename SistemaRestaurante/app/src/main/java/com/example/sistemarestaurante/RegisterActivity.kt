@@ -21,17 +21,17 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         binding.tvLoginLink.setOnClickListener {
-            finish() // Volta para a tela de login
+            finish() 
         }
     }
 
     private fun performRegistration() {
-        val name = binding.etName.text.toString().trim() // Pega o nome do layout
+        val name = binding.etName.text.toString().trim()
         val email = binding.etEmail.text.toString().trim()
         val pass = binding.etPassword.text.toString().trim()
         val confirmPass = binding.etConfirmPassword.text.toString().trim()
 
-        if (name.isEmpty() || email.isEmpty() || pass.isEmpty() || confirmPass.isEmpty()) { // Adiciona 'name'
+        if (name.isEmpty() || email.isEmpty() || pass.isEmpty() || confirmPass.isEmpty()) { 
             Toast.makeText(this, "Preencha todos os campos.", Toast.LENGTH_SHORT).show()
             return
         }
@@ -57,4 +57,5 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
     }
+
 }
