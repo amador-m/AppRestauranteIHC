@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_menu"
+        android:icon="@drawable/ic_menu_book"
+        android:title="Cardápio"/>
+    <item
+        android:id="@+id/nav_cart"
+        android:icon="@drawable/ic_shopping_cart"
+        android:title="Carrinho"/>
+    <item
+        android:id="@+id/nav_hits"
+        android:icon="@drawable/ic_whatshot"
+        android:title="Destaques"/>
+    <item
+        android:id="@+id/nav_orders"
+        android:icon="@drawable/ic_receipt"
+        android:title="Pedidos"/>
+
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_person"
+        android:title="Perfil"/>
+</menu>
