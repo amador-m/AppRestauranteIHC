@@ -1,8 +1,8 @@
 package com.example.sistemarestaurante
 
-import android.content.Intent // <-- VERIFIQUE SE O IMPORT ESTÁ AQUI
+import android.content.Intent 
 import android.os.Bundle
-import android.view.View // <-- VERIFIQUE SE O IMPORT ESTÁ AQUI
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +11,7 @@ import com.example.sistemarestaurante.databinding.ActivityEmployeeDashboardBindi
 class EmployeeDashboardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEmployeeDashboardBinding
     private lateinit var orderAdapter: OrderAdapter
-    private var currentUserType: UserType = UserType.EMPLOYEE // O padrão aqui é Funcionário
+    private var currentUserType: UserType = UserType.EMPLOYEE 
     private val allOrdersList = mutableListOf<Order>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,8 +23,6 @@ class EmployeeDashboardActivity : AppCompatActivity() {
         setupNavigation()
     }
 
-    // (O resto do seu código: setupRecyclerView, setupOrderListener, etc... não muda)
-    // ... (copie o resto do seu código original aqui)
     private fun setupRecyclerView() {
         orderAdapter = OrderAdapter(
             mutableListOf(),
@@ -69,7 +67,6 @@ class EmployeeDashboardActivity : AppCompatActivity() {
     private fun setupNavigation() {
         binding.bottomNavigationView.menu.clear()
 
-        // Infla o menu correto
         if (currentUserType == UserType.ADMIN) {
             binding.bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu_admin)
             binding.bottomNavigationView.selectedItemId = R.id.nav_manage_orders
@@ -80,15 +77,13 @@ class EmployeeDashboardActivity : AppCompatActivity() {
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                // Admin
                 R.id.nav_manage_menu -> {
                     startActivity(Intent(this, AdminActivity::class.java))
                     true
                 }
-                R.id.nav_manage_orders -> true // Já estamos aqui (Admin)
+                R.id.nav_manage_orders -> true 
 
-                // Funcionário
-                R.id.nav_view_orders -> true // Já estamos aqui (Funcionário)
+                R.id.nav_view_orders -> true 
                 R.id.nav_view_menu -> {
                     val intent = Intent(this, MenuActivity::class.java)
                     intent.putExtra("USER_TYPE", currentUserType.name)
@@ -96,7 +91,6 @@ class EmployeeDashboardActivity : AppCompatActivity() {
                     true
                 }
 
-                // Comum
                 R.id.nav_profile -> {
                     startActivity(Intent(this, ProfileActivity::class.java))
                     true
@@ -105,4 +99,5 @@ class EmployeeDashboardActivity : AppCompatActivity() {
             }
         }
     }
+
 }
