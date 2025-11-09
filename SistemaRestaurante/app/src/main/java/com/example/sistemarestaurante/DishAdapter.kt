@@ -11,7 +11,6 @@ class DishAdapter(
     private val onAddClickListener: (Dish) -> Unit
 ) : RecyclerView.Adapter<DishAdapter.DishViewHolder>() {
 
-    // ViewHolder simples
     inner class DishViewHolder(val binding: ItemDishBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishViewHolder {
@@ -21,7 +20,6 @@ class DishAdapter(
 
     override fun getItemCount(): Int = dishes.size
 
-    // Vincula os dados de um item a um ViewHolder
     override fun onBindViewHolder(holder: DishViewHolder, position: Int) {
         val dish = dishes[position]
 
@@ -30,23 +28,19 @@ class DishAdapter(
             tvDishDescription.text = dish.description
             tvDishPrice.text = String.format("R$ %.2f", dish.price)
 
-            // --- CORREÇÃO DO AVISO AQUI ---
             if (dish.imageUrl.isNotEmpty()) {
                 Glide.with(holder.itemView.context)
                     .load(dish.imageUrl)
-                    .placeholder(R.drawable.ic_launcher_background) // (Use um placeholder seu)
-                    .into(ivDishImage) // (Use o ID da sua ImageView no item_dish.xml)
+                    .placeholder(R.drawable.ic_launcher_background) 
+                    .into(ivDishImage) 
             } else {
-                ivDishImage.setImageResource(R.drawable.ic_launcher_foreground) // (Use um drawable seu)
+                ivDishImage.setImageResource(R.drawable.ic_launcher_foreground) 
             }
 
-            // Define o listener para o botão de adicionar
-            // (Assumindo que o ID é btnAddDish no item_dish.xml)
             btnAddDish.setOnClickListener {
                 onAddClickListener(dish)
             }
 
-            // Exibir/esconder se o prato está disponível (RF16)
             if (!dish.isAvailable) {
                 root.alpha = 0.5f
                 btnAddDish.isEnabled = false
@@ -64,4 +58,5 @@ class DishAdapter(
         dishes = newDishes
         notifyDataSetChanged()
     }
+
 }
