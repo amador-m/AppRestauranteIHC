@@ -15,8 +15,9 @@ data class User(
     val profileImageUrl: String = "",
     val dateOfBirth: String = "",
     val phone: String = "",
-    val loyaltyPoints: Int = 0, // Pontos atuais (Ex: 0 a 9)
-    val coupons: Int = 0        // Cupons acumulados
+    val loyaltyPoints: Int = 0, 
+    val coupons: Int = 0     
 ) {
     constructor() : this("", "", "", UserType.CLIENT, "", "", "", "", 0, 0)
+
 }
