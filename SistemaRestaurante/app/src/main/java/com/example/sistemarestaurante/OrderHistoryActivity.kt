@@ -24,7 +24,6 @@ class OrderHistoryActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Garante que o item correto está selecionado
         binding.bottomNavigationView.selectedItemId = R.id.nav_orders
     }
 
@@ -47,7 +46,7 @@ class OrderHistoryActivity : AppCompatActivity() {
                     finish()
                     true
                 }
-                R.id.nav_orders -> true // Já estamos aqui
+                R.id.nav_orders -> true 
                 R.id.nav_profile -> {
                     startActivity(Intent(this, ProfileActivity::class.java))
                     finish()
@@ -60,16 +59,14 @@ class OrderHistoryActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         clientOrderAdapter = ClientOrderAdapter(ordersList) { order ->
-            // Inicia a nova tela de Detalhes do Pedido
             val intent = Intent(this, OrderDetailActivity::class.java)
-            intent.putExtra("ORDER_DETAILS", order) // Passa o objeto Order
+            intent.putExtra("ORDER_DETAILS", order) 
             startActivity(intent)
         }
         binding.rvClientOrders.layoutManager = LinearLayoutManager(this)
         binding.rvClientOrders.adapter = clientOrderAdapter
     }
 
-    // Se inscreve no listener que filtra pelos pedidos do cliente
     private fun setupRealtimeOrderListener() {
         FirebaseManager.addClientOrdersListener { result ->
             if (result.isSuccess) {
@@ -77,14 +74,13 @@ class OrderHistoryActivity : AppCompatActivity() {
                 clientOrderAdapter.updateOrders(orders)
             } else {
                 Toast.makeText(this, "Erro ao carregar histórico", Toast.LENGTH_SHORT).show()
-                // (Se o erro for "Usuário não logado", redirecionar para Login)
             }
         }
     }
 
-    // Limpa o listener ao fechar a tela
     override fun onDestroy() {
         super.onDestroy()
         FirebaseManager.removeClientOrdersListener()
     }
+
 }
