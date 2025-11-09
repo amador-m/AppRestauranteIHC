@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sistemarestaurante.databinding.ActivityCartBinding
 
-// (Req 3) Implementa a interface do adapter
 class CartActivity : AppCompatActivity(), CartItemListener {
     private lateinit var binding: ActivityCartBinding
     private lateinit var cartAdapter: CartAdapter
@@ -37,38 +36,32 @@ class CartActivity : AppCompatActivity(), CartItemListener {
     }
 
     private fun setupRecyclerView() {
-        // (Req 3) Passa 'this' (a Activity) como listener
         cartAdapter = CartAdapter(CartManager.getCartItems(), this)
 
         binding.rvCartItems.layoutManager = LinearLayoutManager(this)
         binding.rvCartItems.adapter = cartAdapter
     }
 
-    // Função para atualizar a UI
     private fun refreshCartData() {
         cartAdapter.updateItems(CartManager.getCartItems())
         updateCartSummary()
     }
 
     override fun onIncreaseClicked(cartItem: CartItem) {
-        // Usa o método addItem do seu CartManager, que já incrementa
         CartManager.addItem(cartItem.dish)
         refreshCartData()
     }
 
     override fun onDecreaseClicked(cartItem: CartItem) {
         if (cartItem.quantity > 1) {
-            // Usa o método updateQuantity para diminuir
             CartManager.updateQuantity(cartItem.dish, cartItem.quantity - 1)
         } else {
-            // Se for 1, remove o item
             CartManager.removeItem(cartItem.dish)
         }
         refreshCartData()
     }
 
     override fun onRemoveClicked(cartItem: CartItem) {
-        // Usa o método removeItem do seu CartManager
         CartManager.removeItem(cartItem.dish)
         refreshCartData()
         Toast.makeText(this, "${cartItem.dish.name} removido.", Toast.LENGTH_SHORT).show()
@@ -76,7 +69,6 @@ class CartActivity : AppCompatActivity(), CartItemListener {
 
     override fun onResume() {
         super.onResume()
-        // Atualiza a lista E o item selecionado na barra de navegação
         cartAdapter.updateItems(cartManager.getCartItems())
         updateCartSummary()
         binding.bottomNavigationView.selectedItemId = R.id.nav_cart
@@ -94,7 +86,7 @@ class CartActivity : AppCompatActivity(), CartItemListener {
                     startActivity(Intent(this, MenuActivity::class.java))
                     true
                 }
-                R.id.nav_cart -> true // Já estamos aqui
+                R.id.nav_cart -> true 
                 R.id.nav_orders -> {
                     startActivity(Intent(this, OrderHistoryActivity::class.java))
                     true
@@ -126,10 +118,7 @@ class CartActivity : AppCompatActivity(), CartItemListener {
     }
 
     private fun showConfirmOrderDialog() {
-        // --- CORREÇÃO AQUI ---
-        // Acessa o 'rgPaymentMethod' diretamente do binding, sem o 'clOrderSummary'
         val selectedPaymentId = binding.rgPaymentMethod.checkedRadioButtonId
-        // --- FIM DA CORREÇÃO ---
 
         if (selectedPaymentId == -1) {
             Toast.makeText(this, "Por favor, selecione uma forma de pagamento.", Toast.LENGTH_SHORT).show()
@@ -163,7 +152,7 @@ class CartActivity : AppCompatActivity(), CartItemListener {
             timestamp = System.currentTimeMillis(),
             status = OrderStatus.PENDENTE,
             shippingFee = SHIPPING_FEE,
-            paymentMethod = paymentMethod // Agora usa a string correta e segura
+            paymentMethod = paymentMethod 
         )
 
         FirebaseManager.placeOrder(order) { result ->
@@ -177,8 +166,6 @@ class CartActivity : AppCompatActivity(), CartItemListener {
                         Log.d("CartActivity", "Ponto de fidelidade concedido")
                     } else {
                         Log.e("CartActivity", "Erro ao conceder ponto: ${pointResult.exceptionOrNull()?.message}")
-                        // Nota: O pedido foi feito, mas o ponto falhou.
-                        // Em um app real, aqui entraria uma lógica para "tentar de novo".
                     }
                 }
 
@@ -191,4 +178,5 @@ class CartActivity : AppCompatActivity(), CartItemListener {
             }
         }
     }
+
 }
