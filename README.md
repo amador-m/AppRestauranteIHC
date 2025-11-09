@@ -66,3 +66,7 @@ O administrador tem controle total sobre o sistema.
 * **UI:** Android XML Layouts com Material Design 3 (MaterialCardView, BottomNavigationView, TextInputLayout, etc.)
 * **Carregamento de Imagens:** Glide (para carregar imagens do cardápio e avatares)
 * **Componentes:** `RecyclerView` (para todas as listas), `View Binding`, `Parcelize` (para passar objetos entre Activities)
+
+--- 
+
+Desenvolvido como um projeto da faculdade na disciplina de Interação Humano Computador por Maria Eduarda Amador Mota e Davi de Almeida Cejudo
